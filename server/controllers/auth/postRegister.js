@@ -1,5 +1,6 @@
 import User from "../../models/user.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const postRegister = async (req, res) => {
   try {
@@ -17,7 +18,16 @@ export const postRegister = async (req, res) => {
       password: encryptedPassword,
     });
 
-    const token = "JWT TOKEN";
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        mail,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
 
     res.status(201).json({
       userDetails: {

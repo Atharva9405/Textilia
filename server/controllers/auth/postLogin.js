@@ -9,7 +9,16 @@ export const postLogin = async (req, res) => {
     const user = await User.findOne({ mail: mail.toLowerCase() });
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      const token = "JWT_TOKEN";
+      const token = jwt.sign(
+        {
+          userId: user._id,
+          mail,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "24h",
+        }
+      );
       return res.status(200).json({
         userDetails: {
           mail: user.mail,
