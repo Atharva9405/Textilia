@@ -31,7 +31,7 @@ const AddFriendButton = () => {
       />
       <AddFreindDialogue 
         isDialogueOpen={isDialogueOpen}
-        closeDialogueHandler={handleOpenAddFriendDialogue}
+        closeDialogueHandler={handleCloseAddFriendDialogue}
       />
     </>
   );
