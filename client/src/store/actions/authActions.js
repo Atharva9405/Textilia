@@ -10,10 +10,11 @@ export const getActions = (dispatch) => {
     login: (userDetails, history) => dispatch(login(userDetails, history)),
     register: (userDetails, history) =>
       dispatch(register(userDetails, history)),
+    setUserDetails: (userDetails) => dispatch(setUserDetails(userDetails))
   };
 };
 
-const setUserDetails = (userDetails) => {
+export const setUserDetails = (userDetails) => {
   return {
     type: authActions.SET_USER_DETAILS,
     userDetails,
