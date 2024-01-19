@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import authRoutes from './routes/authRoutes.js'
 import registerSocketServer from "./socketServer.js";
+import friendInvitationRoutes from './routes/friendInvitationRoutes.js'
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/auth',authRoutes)
+app.use('/api/friend-invitation', friendInvitationRoutes)
 
 const server = http.createServer(app);
 registerSocketServer(server)

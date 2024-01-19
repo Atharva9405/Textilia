@@ -6,16 +6,19 @@ const apiClient = axios.create({
   timeout: 10000,
 });
 
-apiClient.interceptors.request.use((config) => {
-  const userDetails = localStorage.getItem("user");
-  if (userDetails) {
-    const token = JSON.parse(userDetails).token;
-    config.headers.Authorization = `Bearer ${token}`;
+apiClient.interceptors.request.use(
+  (config) => {
+    const userDetails = localStorage.getItem("user");
+    if (userDetails) {
+      const token = JSON.parse(userDetails).token;
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (err) => {
+    return Promise.reject(err);
   }
-  return config;
-},(err) => {
-  return Promise.reject(err)
-});
+);
 
 export const login = async (data) => {
   try {
@@ -32,6 +35,18 @@ export const register = async (data) => {
   try {
     return await apiClient.post("/auth/register", data);
   } catch (exception) {
+    return {
+      error: true,
+      exception,
+    };
+  }
+};
+
+export const sendFriendInvitation = async (data) => {
+  try {
+    return await apiClient.post("/friend-invitation/invite", data);
+  } catch (exception) {
+    checkResponseCode(exception);
     return {
       error: true,
       exception,
