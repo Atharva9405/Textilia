@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import authSocket from "./middleware/authSocket.js";
 import newConnectionHandler from "./socketHandlers/newConnectionHandler.js";
+import disconnectHandler from "./socketHandlers/disconnectHandler.js";
 
 const registerSocketServer = (server) => {
   const io = new Server(server, {
@@ -19,6 +20,9 @@ const registerSocketServer = (server) => {
     console.log("user connected");
     console.log(socket.id);
     newConnectionHandler(socket, io);
+    socket.on("disconnect", () => {
+      disconnectHandler(socket);
+    });
   });
 };
 
