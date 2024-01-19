@@ -1,4 +1,6 @@
 import { Server } from "socket.io";
+import authSocket from "./middleware/authSocket.js";
+import newConnectionHandler from "./socketHandlers/newConnectionHandler.js";
 
 const registerSocketServer = (server) => {
   const io = new Server(server, {
@@ -6,12 +8,17 @@ const registerSocketServer = (server) => {
       origin: "*",
       methods: ["GET", "POST"],
     },
-    transports: ['websocket']
+    transports: ["websocket"],
+  });
+
+  io.use((socket, next) => {
+    authSocket(socket, next);
   });
 
   io.on("connection", (socket) => {
     console.log("user connected");
     console.log(socket.id);
+    newConnectionHandler(socket, io);
   });
 };
 
