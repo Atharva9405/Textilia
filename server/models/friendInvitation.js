@@ -11,6 +11,6 @@ const friendInvitationSchema = new mongoose.Schema({
     }
 })
 
-const FriendInvitation = mongoose.model('User', friendInvitationSchema);
+const FriendInvitation = mongoose.model('FriendInvitation', friendInvitationSchema);
 
 export default FriendInvitation;
