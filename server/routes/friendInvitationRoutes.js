@@ -1,4 +1,4 @@
-import express from "express";
+import express, { json } from "express";
 import Joi from "joi";
 import validator from "express-joi-validation";
 import { verifyToken } from "../middleware/auth.js";
@@ -12,11 +12,18 @@ const postFriendInvitationSchema = Joi.object({
   targetMailAddress: Joi.string().email(),
 });
 
+const inviteDecisionSchema = Joi.object({
+  id: Joi.string().required(),
+})
+
 router.post(
   "/invite",
   verifyToken,
   customValidator.body(postFriendInvitationSchema),
   friendInvitationControllers.postInvite
 );
+
+router.post('/accept', verifyToken, customValidator.body(inviteDecisionSchema), friendInvitationControllers.postAccept)
+router.post('/reject', verifyToken, customValidator.body(inviteDecisionSchema), friendInvitationControllers.postReject)
 
 export default router;
