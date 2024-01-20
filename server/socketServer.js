@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import authSocket from "./middleware/authSocket.js";
 import newConnectionHandler from "./socketHandlers/newConnectionHandler.js";
 import disconnectHandler from "./socketHandlers/disconnectHandler.js";
+import { setSocketServerInstance } from "./serverStore.js";
 
 const registerSocketServer = (server) => {
   const io = new Server(server, {
@@ -11,6 +12,8 @@ const registerSocketServer = (server) => {
     },
     transports: ["websocket"],
   });
+
+  setSocketServerInstance(io)
 
   io.use((socket, next) => {
     authSocket(socket, next);
