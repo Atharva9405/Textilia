@@ -23,6 +23,13 @@ export const setPendingFriendsInvitation = (pendingFriendsInvitations) => {
   };
 };
 
+export const setOnlineUsers = (onlineUsers) => {
+  return {
+    type: friendsActions.SET_ONLINE_USERS,
+    onlineUsers,
+  }
+}
+
 export const setFriends = (friends) => {
   return {
     type: friendsActions.SET_FRIENDS,

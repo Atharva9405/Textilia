@@ -1,6 +1,6 @@
 const connectedUsers = new Map();
 
-let io= null;
+let io = null;
 
 export const setSocketServerInstance = (ioInstance) => {
   io = ioInstance;
@@ -32,4 +32,12 @@ export const getActiveConnections = (userId) => {
     }
   });
   return activeConnections;
+};
+
+export const getOnlineUsers = () => {
+  const onlineUsers = [];
+  connectedUsers.forEach((value, key) => {
+    onlineUsers.push({ socketId: key, userId: value.userId });
+  });
+  return onlineUsers;
 };
