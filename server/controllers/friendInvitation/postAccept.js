@@ -1,6 +1,9 @@
 import FriendInvitation from "../../models/friendInvitation.js";
 import User from "../../models/user.js";
-import updateFriendsPendingInvitations from "../../socketHandlers/updates/friends.js";
+import {
+  updateFriends,
+  updateFriendsPendingInvitations,
+} from "../../socketHandlers/updates/friends.js";
 
 const postAccept = async (req, res) => {
   try {
@@ -20,7 +23,8 @@ const postAccept = async (req, res) => {
     await senderUser.save();
     await receiverUser.save();
     await FriendInvitation.findByIdAndDelete(id);
-
+    updateFriends(senderId.toString());
+    updateFriends(receiverId.toString());
     updateFriendsPendingInvitations(receiverId.toString());
     return res.status(200).send("Friend successfully added!");
   } catch (err) {
@@ -30,4 +34,3 @@ const postAccept = async (req, res) => {
 };
 
 export default postAccept;
-    

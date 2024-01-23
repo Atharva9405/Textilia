@@ -1,6 +1,6 @@
 import FriendInvitation from "../../models/friendInvitation.js";
 import User from "../../models/user.js";
-import updateFriendsPendingInvitations from "../../socketHandlers/updates/friends.js";
+import {updateFriendsPendingInvitations} from "../../socketHandlers/updates/friends.js";
 
 const postInvite = async (req, res) => {
   const { targetMailAddress } = req.body;

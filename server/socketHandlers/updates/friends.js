@@ -5,7 +5,7 @@ import {
   getSocketServerInstance,
 } from "../../serverStore.js";
 
-const updateFriendsPendingInvitations = async (userId) => {
+export const updateFriendsPendingInvitations = async (userId) => {
   try {
     const pendingInvitations = await FriendInvitation.find({
       receiverId: userId,
@@ -25,4 +25,31 @@ const updateFriendsPendingInvitations = async (userId) => {
   }
 };
 
-export default updateFriendsPendingInvitations;
+export const updateFriends = async (userId) => {
+  try {
+    const receiverList = getActiveConnections(userId);
+    if (receiverList.length > 0) {
+      const user = await User.findById(userId, { _id: 1, friends: 1 }).populate(
+        "friends",
+        "_id username mail"
+      );
+      if (user) {
+        const friendsList = user.friends.map((f) => {
+          return {
+            id: f._id,
+            mail: f.mail,
+            username: f.username,
+          };
+        });
+        const io = getSocketServerInstance();
+        receiverList.forEach((receiverId) => {
+          io.to(receiverId).emit("friends-list", {
+            friends: friendsList ? friendsList : [],
+          });
+        });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};

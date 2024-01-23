@@ -1,5 +1,5 @@
 import FriendInvitation from "../../models/friendInvitation.js";
-import updateFriendsPendingInvitations from "../../socketHandlers/updates/friends.js";
+import {updateFriendsPendingInvitations} from "../../socketHandlers/updates/friends.js";
 
 const postReject = async (req, res) => {
   try {

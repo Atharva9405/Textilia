@@ -1,6 +1,9 @@
 import { io } from "socket.io-client";
-import { setPendingFriendsInvitation } from "../store/actions/friendsActions";
-import store from '../store/store'
+import {
+  setPendingFriendsInvitation,
+  setFriends,
+} from "../store/actions/friendsActions";
+import store from "../store/store";
 
 let socket = null;
 
@@ -21,9 +24,11 @@ export const connectWithSocketServer = (userDetails) => {
     console.error("Socket.IO connection error:", error);
   });
   socket.on("friends-invitations", (data) => {
-    const {pendingInvitations} = data;
-    console.log("friends invitation event came")
-    console.log(pendingInvitations)
-    store.dispatch(setPendingFriendsInvitation(pendingInvitations))
-  })
+    const { pendingInvitations } = data;
+    store.dispatch(setPendingFriendsInvitation(pendingInvitations));
+  });
+  socket.on("friends-list", (data) => {
+    const { friends } = data;
+    store.dispatch(setFriends(friends));
+  });
 };
