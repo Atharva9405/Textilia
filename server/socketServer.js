@@ -5,6 +5,7 @@ import disconnectHandler from "./socketHandlers/disconnectHandler.js";
 import { getOnlineUsers, setSocketServerInstance } from "./serverStore.js";
 import directMessageHandler from "./socketHandlers/directMessageHandler.js";
 import directChatHistoryHandler from "./socketHandlers/directChatHistoryHandler.js";
+import roomCreateHandler from './socketHandlers/roomCreateHandler.js'
 
 const registerSocketServer = (server) => {
   const io = new Server(server, {
@@ -39,6 +40,10 @@ const registerSocketServer = (server) => {
     socket.on("direct-chat-history", (data) => {
       directChatHistoryHandler(socket, data);
     });
+
+    socket.on('room-create',() => {
+      roomCreateHandler(socket)
+    })
 
     socket.on("disconnect", () => {
       disconnectHandler(socket);

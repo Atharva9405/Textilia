@@ -1,4 +1,7 @@
+import { v4 as uuidv4 } from "uuid";
+
 const connectedUsers = new Map();
+let activeRooms = [];
 
 let io = null;
 
@@ -40,4 +43,24 @@ export const getOnlineUsers = () => {
     onlineUsers.push({ socketId: key, userId: value.userId });
   });
   return onlineUsers;
+};
+
+export const addNewActiveRoom = (userId, socketId) => {
+  const newActiveRoom = {
+    roomCreator: {
+      userId,
+      socketId,
+    },
+    participants: [
+      {
+        userId,
+        socketId,
+      },
+    ],
+    roomId: uuidv4(),
+  };
+  activeRooms = [...activeRooms, newActiveRoom];
+  console.log('new active rooms: ')
+  console.log(activeRooms)
+  return newActiveRoom;
 };
