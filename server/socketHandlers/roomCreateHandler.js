@@ -1,4 +1,5 @@
 import { addNewActiveRoom } from "../serverStore.js";
+import { updateRooms } from "./updates/rooms.js";
 
 const roomCreateHandler = (socket) => {
   console.log("handling room create event");
@@ -10,6 +11,7 @@ const roomCreateHandler = (socket) => {
   socket.emit("room-create", {
     roomDetails,
   });
+  updateRooms();
 };
 
 export default roomCreateHandler;
